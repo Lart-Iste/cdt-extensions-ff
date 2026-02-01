@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <link href="popup.css" rel="stylesheet">
+    <title>Confrérie des Traducteurs - Extensions</title>
+</head>
+<body>
+<header class="header">
+    <div class="header-row">
+        <div class="header-title">
+            <img alt="logo" class="logo" src="../images/logo.png">
+            <h1>Confrérie des Traducteurs<br>Extensions</h1>
+        </div>
+        <button aria-controls="settingsPanelGlobal" aria-expanded="false"
+                class="icon-button settings-toggle" id="settingsToggleGlobal"
+                title="Paramètres généraux" type="button">
+            <img alt="" class="icon" src="../images/icon-settings.svg">
+        </button>
+    </div>
+</header>
+
+<section class="settings-panel" hidden id="settingsPanelGlobal">
+    <h2>Paramètres généraux</h2>
+
+    <div class="setting-row">
+        <span class="setting-label">Debug</span>
+        <label class="switch">
+            <input id="debugToggle" type="checkbox">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="setting-row">
+        <span class="setting-label">Positions des boutons</span>
+        <p class="hint">Faites glisser les boutons sur la page pour les déplacer.</p>
+        <button class="reset-button" id="resetPositions" type="button">Réinitialiser les positions</button>
+    </div>
+</section>
+
+<div class="option">
+    <label class="switch">
+        <input id="redirectToggle" type="checkbox">
+        <span class="slider"></span>
+    </label>
+    <span class="label-text">Nexus → Confrérie des Traducteurs</span>
+    <button aria-controls="settingsPanelNexus" aria-expanded="false" class="icon-button settings-toggle"
+            id="settingsToggleNexus"
+            title="Paramètres Nexus" type="button">
+        <img alt="" class="icon" src="../images/icon-settings.svg">
+    </button>
+</div>
+
+<div class="option">
+    <label class="switch">
+        <input id="downloadToggle" type="checkbox">
+        <span class="slider"></span>
+    </label>
+    <span class="label-text">Confrérie des Traducteurs → Mod Organizer 2</span>
+    <button aria-controls="settingsPanelMo2" aria-expanded="false" class="icon-button settings-toggle"
+            id="settingsToggleMo2"
+            title="Paramètres MO2" type="button">
+        <img alt="" class="icon" src="../images/icon-settings.svg">
+    </button>
+</div>
+
+<section class="settings-panel" hidden id="settingsPanelNexus">
+    <h2>Nexus → CdT</h2>
+    <div class="setting-row">
+        <label class="setting-label" for="thresholdRange">Seuil Levenshtein</label>
+        <div class="range-row">
+            <input id="thresholdRange" max="0.80" min="0.10" step="0.05" type="range">
+            <span class="range-value" id="thresholdValue">0.30</span>
+        </div>
+    </div>
+
+    <div class="setting-row">
+        <span class="setting-label">Ordre des stratégies</span>
+        <ul class="strategy-list" id="strategyList"></ul>
+        <p class="hint">Faites glisser pour réordonner.</p>
+    </div>
+
+    <button class="reset-button" id="resetDefaults" type="button">Restaurer les paramètres par défaut</button>
+</section>
+
+<section class="settings-panel" hidden id="settingsPanelMo2">
+    <h2>CdT → MO2</h2>
+    <p class="hint">Aucun paramètre pour le moment.</p>
+</section>
+
+<p id="status"></p>
+
+<script src="../shared/settings.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

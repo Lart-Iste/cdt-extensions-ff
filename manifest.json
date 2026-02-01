@@ -1,0 +1,73 @@
+{
+  "manifest_version": 3,
+  "name": "Confrérie des Traducteurs - Extensions",
+  "version": "1.0",
+  "description": "Extensions non officielles pour la Confrérie des Traducteurs",
+  "icons": {
+    "48": "images/logo.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "images/logo.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.confrerie-des-traducteurs.fr/*",
+    "https://*.confrerie-des-traducteurs.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.nexusmods.com/*/mods/*"
+      ],
+      "css": [
+        "styles/cdtWidget.css"
+      ],
+      "js": [
+        "shared/font.js",
+        "shared/settings.js",
+        "shared/logger.js",
+        "shared/widget.js",
+        "scripts/nexusToCdt.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.confrerie-des-traducteurs.fr/*/mods/*"
+      ],
+      "css": [
+        "styles/cdtWidget.css"
+      ],
+      "js": [
+        "shared/font.js",
+        "shared/settings.js",
+        "shared/logger.js",
+        "shared/widget.js",
+        "scripts/cdtToMo2.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/logo.png",
+        "templates/nexusToCdt.html",
+        "templates/cdtToMo2.html",
+        "fonts/Poppins-Regular.ttf"
+      ],
+      "matches": [
+        "https://www.nexusmods.com/*",
+        "https://www.confrerie-des-traducteurs.fr/*"
+      ]
+    }
+  ]
+}
