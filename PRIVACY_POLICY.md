@@ -35,10 +35,9 @@ L’extension ne possède aucun serveur et ne conserve aucune base de données d
 L’extension peut envoyer des requêtes réseau vers :
 
 - `https://www.confrerie-des-traducteurs.fr/`
-- `https://*.confrerie-des-traducteurs.com/`
 
 Aucune autre destination n’est utilisée.  
-L’extension ne vend ni ne transfère vos données à des tiers.
+**L’extension ne vend ni ne transfère vos données à des tiers.**
 
 ## Sécurité
 
@@ -57,4 +56,5 @@ La date de mise à jour sera alors modifiée.
 
 ## Contact
 
-Si vous avez des questions, contactez l’auteur de l’extension via la page de publication.
+Si vous avez des questions, contactez l’auteur de l’extension à l’adresse suivante :
+`aaltchv@proton.me`

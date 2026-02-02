@@ -4,11 +4,14 @@
   "version": "1.0",
   "description": "Extensions non officielles pour la Confrérie des Traducteurs",
   "icons": {
-    "48": "images/logo.png"
+    "32": "images/logo_32.png",
+    "48": "images/logo_48.png",
+    "64": "images/logo_64.png",
+    "128": "images/logo_128.png"
   },
   "action": {
     "default_popup": "popup/popup.html",
-    "default_icon": "images/logo.png"
+    "default_icon": "images/logo_128.png"
   },
   "permissions": [
     "storage",
@@ -16,8 +19,7 @@
     "scripting"
   ],
   "host_permissions": [
-    "https://www.confrerie-des-traducteurs.fr/*",
-    "https://*.confrerie-des-traducteurs.com/*"
+    "https://www.confrerie-des-traducteurs.fr/*"
   ],
   "background": {
     "service_worker": "background/service-worker.js"
@@ -59,7 +61,10 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "images/logo.png",
+        "images/logo_32.png",
+        "images/logo_48.png",
+        "images/logo_64.png",
+        "images/logo_128.png",
         "templates/nexusToCdt.html",
         "templates/cdtToMo2.html",
         "fonts/Poppins-Regular.ttf"

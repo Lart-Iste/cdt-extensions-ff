@@ -13,7 +13,7 @@
 
     const ASSETS = {
         templateUrl: extensionApi.runtime.getURL('templates/cdtToMo2.html'),
-        iconUrl: extensionApi.runtime.getURL('images/logo.png')
+        iconUrl: extensionApi.runtime.getURL('images/logo_128.png')
     };
 
     const CONFIG = {
@@ -177,7 +177,7 @@
                     }
                 }
 
-                const filenameMatch = contentDisposition.match(/filename\s*=\s*\"?([^\";]+)\"?/i);
+                const filenameMatch = contentDisposition.match(/filename\s*=\s*"?([^";]+)"?/i);
                 if (filenameMatch?.[1]) {
                     return filenameMatch[1];
                 }

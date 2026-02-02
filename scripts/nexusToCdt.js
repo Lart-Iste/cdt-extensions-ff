@@ -16,7 +16,7 @@
 
     const ASSETS = {
         templateUrl: extensionApi.runtime.getURL('templates/nexusToCdt.html'),
-        iconUrl: extensionApi.runtime.getURL('images/logo.png')
+        iconUrl: extensionApi.runtime.getURL('images/logo_128.png')
     };
 
     const UI_STATES = {
