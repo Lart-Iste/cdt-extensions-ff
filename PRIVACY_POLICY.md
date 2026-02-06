@@ -1,6 +1,6 @@
 # Politique de confidentialité
 
-Dernière mise à jour : 1 février 2026
+Dernière mise à jour : 6 février 2026
 
 ## Résumé
 
@@ -35,6 +35,7 @@ L’extension ne possède aucun serveur et ne conserve aucune base de données d
 L’extension peut envoyer des requêtes réseau vers :
 
 - `https://www.confrerie-des-traducteurs.fr/`
+- `https://*.confrerie-des-traducteurs.com/*`
 
 Aucune autre destination n’est utilisée.  
 **L’extension ne vend ni ne transfère vos données à des tiers.**

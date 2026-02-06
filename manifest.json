@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Confrérie des Traducteurs - Extensions",
-  "version": "1.0",
+  "version": "1.1.1",
   "description": "Extensions non officielles pour la Confrérie des Traducteurs",
   "icons": {
     "32": "images/logo_32.png",
@@ -15,11 +15,11 @@
   },
   "permissions": [
     "storage",
-    "tabs",
     "scripting"
   ],
   "host_permissions": [
-    "https://www.confrerie-des-traducteurs.fr/*"
+    "https://www.confrerie-des-traducteurs.fr/*",
+    "https://*.confrerie-des-traducteurs.com/*"
   ],
   "background": {
     "service_worker": "background/service-worker.js"
