@@ -20,10 +20,10 @@
     };
 
     const UI_STATES = {
-        default: {label: 'Traduction<br>française', disabled: false},
+        default: {label: 'Traduction\nfrançaise', disabled: false},
         loading: {label: 'Recherche...', disabled: true},
-        success: {label: 'Traduction<br>trouvée', disabled: false},
-        notFound: {label: 'Pas de traduction<br>trouvée', disabled: false},
+        success: {label: 'Traduction\ntrouvée', disabled: false},
+        notFound: {label: 'Pas de traduction\ntrouvée', disabled: false},
         error: {label: 'Erreur', disabled: false}
     };
 
@@ -479,13 +479,32 @@
             container.id = 'cdt-nexus-root';
             container.className = 'cdt-widget cdt-widget--nexus';
             container.dataset.state = 'default';
-            container.innerHTML = `
-                <div class="cdt-widget__drag" title="Déplacer" aria-hidden="true">⋮⋮</div>
-                <button class="cdt-widget__button" type="button">
-                    <img class="cdt-widget__icon" alt="Confrérie des Traducteurs">
-                    <span class="cdt-widget__label">Traduction<br>française</span>
-                </button>
-            `;
+
+            // Création manuelle pour éviter innerHTML
+            const drag = document.createElement('div');
+            drag.className = 'cdt-widget__drag';
+            drag.title = 'Déplacer';
+            drag.setAttribute('aria-hidden', 'true');
+            drag.textContent = '⋮⋮';
+
+            const btn = document.createElement('button');
+            btn.className = 'cdt-widget__button';
+            btn.type = 'button';
+
+            const icon = document.createElement('img');
+            icon.className = 'cdt-widget__icon';
+            icon.alt = 'Confrérie des Traducteurs';
+            icon.src = ASSETS.iconUrl;
+
+            const label = document.createElement('span');
+            label.className = 'cdt-widget__label';
+            label.textContent = 'Traduction\nfrançaise';
+
+            btn.appendChild(icon);
+            btn.appendChild(label);
+            container.appendChild(drag);
+            container.appendChild(btn);
+
             return container;
         }
     }
@@ -559,7 +578,7 @@
             const state = UI_STATES[stateName] || UI_STATES.default;
             this.container.dataset.state = stateName;
             this.button.disabled = state.disabled;
-            this.label.innerHTML = state.label;
+            this.label.textContent = state.label;
         }
 
         async #handleClick() {

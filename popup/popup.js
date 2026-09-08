@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function buildStrategyList() {
-        strategyList.innerHTML = "";
+        strategyList.replaceChildren();
         state.strategies.forEach(strategy => {
             const item = document.createElement("li");
             item.className = "strategy-item";

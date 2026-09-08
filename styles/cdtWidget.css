@@ -50,6 +50,7 @@
     font-family: 'Segoe UI',sans-serif;
     line-height: 1.1;
     text-align: left;
+    white-space: pre-wrap
 }
 
 .cdt-widget__button:hover:not(:disabled) {
