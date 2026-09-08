@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 - 2026-09-08
+
+### Fork version Firefox
+
+- **Changement** :
+    - Augmentation du temps d'affichage pour le prompt 800>3000
+    - Intégration du bouton aux pages Ctd
+
 ## 1.1.1 - 2026-02-06
 
 ### Corrections

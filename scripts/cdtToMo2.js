@@ -24,7 +24,8 @@
                 primary: WIDGET_THEME.primary,
                 text: WIDGET_THEME.text,
                 border: WIDGET_THEME.border
-            }
+            },
+            integrated: true
         },
         games: {
             'skyrim': {
@@ -55,6 +56,31 @@
     };
 
     const Widget = globalThis.CdtWidget;
+
+    // Fonction pour renommer le bouton de téléchargement manuel
+    const renameManualDownloadButton = () => {
+        // On cible le bouton à l'intérieur du lien dans la div #download
+        const btn = document.querySelector('div#download > a > button');
+        
+        if (btn && btn.textContent.includes('Télécharger le mod !')) {
+            btn.textContent = 'Télécharger manuellement';
+        }
+    };
+
+    // On utilise un MutationObserver pour détecter si le bouton apparaît dynamiquement
+    // (Utile si le site charge la zone de téléchargement via du JavaScript)
+    const observer = new MutationObserver((mutations) => {
+        renameManualDownloadButton();
+    });
+   
+    // On démarre la surveillance sur tout le corps de la page
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    // On appelle aussi la fonction une première fois au chargement
+    renameManualDownloadButton();
 
     function storageGet(defaults) {
         if (hasBrowserApi) {
@@ -247,7 +273,7 @@
                 <div class="cdt-widget__drag" title="Déplacer" aria-hidden="true">⋮⋮</div>
                 <button class="cdt-widget__button" type="button">
                     <img class="cdt-widget__icon" alt="Confrérie des Traducteurs">
-                    <span class="cdt-widget__label">Télécharger<br>avec<br>MO2</span>
+                    <span class="cdt-widget__label">Télécharger avec MO2</span>
                 </button>
             `;
             return container;
@@ -380,6 +406,69 @@
         }
 
         async #setupUI() {
+            if (CONFIG.ui.integrated) {
+                // MODE INTÉGRÉ : On cherche la div #download
+                const downloadDiv = document.getElementById('download');
+                
+                if (downloadDiv) {
+                    // On cherche le lien <a> à l'intérieur de la div
+                    const anchor = downloadDiv.querySelector('a');
+                    
+                    if (anchor) {
+                        // Création du bouton
+                        const btn = document.createElement('button');
+                        btn.className = 'cdt-widget__button';
+                        btn.innerHTML = `
+                            <img class="cdt-widget__icon" alt="Confrérie des Traducteurs">
+                            <span class="cdt-widget__label">Télécharger avec MO2</span>
+                        `;
+                        
+                        // --- AJOUT DE LA LIGNE CORRIGEANTE ICI ---
+                        const icon = btn.querySelector('.cdt-widget__icon');
+                        if (icon) icon.src = ASSETS.iconUrl;
+                        // -------------------------------------------
+
+                        // Styles pour s'assurer qu'il est bien visible et joli
+                            btn.style.setProperty('margin', '5px', 'important');
+                            btn.style.setProperty('padding', '8px 12px', 'important');
+                            btn.style.setProperty('cursor', 'pointer', 'important');
+                            btn.style.setProperty('background-color', CONFIG.ui.colors.primary, 'important');
+                            btn.style.setProperty('color', CONFIG.ui.colors.text, 'important');
+                            btn.style.setProperty('border', `1px solid ${CONFIG.ui.colors.border}`, 'important');
+                            btn.style.setProperty('border-radius', '4px', 'important');
+                            btn.style.setProperty('display', 'inline-block', 'important');
+                            btn.style.setProperty('vertical-align', 'middle', 'important');
+                            btn.style.setProperty('font-family', 'inherit', 'important'); // Pour garder la police du site
+                            btn.style.setProperty('font-weight', 'bold', 'important'); // Pour que le texte soit bien lisible
+
+                        // Action du bouton
+                        btn.onclick = (e) => {
+                            e.preventDefault(); 
+                            this.#handleDownload();
+                        };
+                        
+                        btn.disabled = !this.modManagerLink;
+
+                        // On injecte le bouton à l'intérieur de la balise <a>
+                        anchor.appendChild(btn);
+                        Logger.success('Button integrated into anchor inside #download');
+                    } else {
+                        // Fallback si la div existe mais pas de lien <a>
+                        Logger.warn('Target <a> not found inside #download, using widget');
+                        await this.#setupFloatingWidget();
+                    }
+                } else {
+                    // Fallback si la div #download n'existe pas du tout
+                    Logger.warn('#download div not found, using widget');
+                    await this.#setupFloatingWidget();
+                }
+            } else {
+                // MODE FLOTTANT (Ancien comportement)
+                await this.#setupFloatingWidget();
+            }
+        }
+
+        async #setupFloatingWidget() {
             this.uiManager = await UIManager.create();
             this.uiManager.applyTheme(CONFIG.ui);
             this.button = new ButtonComponent(this.uiManager.container, () => this.#handleDownload());
@@ -394,7 +483,6 @@
                 });
             }
         }
-
         #handleDownload() {
             try {
                 const popup = window.open(this.modManagerLink, '_blank');
@@ -405,7 +493,7 @@
                         } catch (error) {
                             // Ignore close failures (browser may block programmatic close).
                         }
-                    }, 800);
+                    }, 3000);
                 }
                 Logger.success('Download initiated via MO2');
             } catch (error) {

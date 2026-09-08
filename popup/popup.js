@@ -35,20 +35,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     const settingsToggleGlobal = document.getElementById("settingsToggleGlobal");
     const settingsToggleNexus = document.getElementById("settingsToggleNexus");
     const settingsToggleMo2 = document.getElementById("settingsToggleMo2");
+    const settingsToggleIntegrated = document.getElementById("settingsToggleIntegrated"); // Vérifie bien cet ID dans ton HTML
+    const settingsPanelIntegrated = document.getElementById("settingsPanelIntegrated");
     const settingsPanelGlobal = document.getElementById("settingsPanelGlobal");
     const settingsPanelNexus = document.getElementById("settingsPanelNexus");
     const settingsPanelMo2 = document.getElementById("settingsPanelMo2");
     const status = document.getElementById("status");
 
     const saved = await storageGet(DEFAULT_SETTINGS);
+    
     const state = {
-        redirect: saved.redirect ?? DEFAULT_SETTINGS.redirect,
-        download: saved.download ?? DEFAULT_SETTINGS.download,
+        redirect: saved.redirect ?? true, 
+        download: saved.download ?? true,
         debug: saved.debug ?? DEFAULT_SETTINGS.debug,
         levenshteinThreshold: clampThreshold(saved.levenshteinThreshold),
         strategies: normalizeStrategies(saved.strategies),
         positionNexus: normalizePosition(saved.positionNexus),
-        positionMo2: normalizePosition(saved.positionMo2)
+        positionMo2: normalizePosition(saved.positionMo2),
+        integrated: saved.integrated ?? true
     };
 
     let statusTimer = null;
@@ -72,7 +76,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             levenshteinThreshold: state.levenshteinThreshold,
             strategies: state.strategies,
             positionNexus: state.positionNexus,
-            positionMo2: state.positionMo2
+            positionMo2: state.positionMo2,
+            integrated: state.integrated
         });
         setStatus("Paramètres sauvegardés");
     }
@@ -112,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
                 saveStrategiesFromDom();
             });
-
             strategyList.appendChild(item);
         });
     }
@@ -130,6 +134,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         thresholdRange.value = state.levenshteinThreshold.toFixed(2);
         updateThresholdDisplay();
         buildStrategyList();
+        // Correction du nom de la variable ici
+        if (settingsToggleIntegrated) {
+            settingsToggleIntegrated.checked = state.integrated;
+        }
     }
 
     strategyList.addEventListener("dragover", event => {
@@ -181,6 +189,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     settingsToggleGlobal.addEventListener("click", () => togglePanel(settingsToggleGlobal, settingsPanelGlobal));
     settingsToggleNexus.addEventListener("click", () => togglePanel(settingsToggleNexus, settingsPanelNexus));
     settingsToggleMo2.addEventListener("click", () => togglePanel(settingsToggleMo2, settingsPanelMo2));
+
+    if (settingsToggleIntegrated) {
+        settingsToggleIntegrated.addEventListener("click", () => togglePanel(settingsToggleIntegrated, settingsPanelIntegrated));
+    }
 
     resetDefaults.addEventListener("click", async () => {
         Object.assign(state, {

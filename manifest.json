@@ -22,7 +22,7 @@
     "https://*.confrerie-des-traducteurs.com/*"
   ],
   "background": {
-    "service_worker": "background/service-worker.js"
+    "scripts": ["background/service-worker.js"]
   },
   "content_scripts": [
     {
@@ -74,5 +74,10 @@
         "https://www.confrerie-des-traducteurs.fr/*"
       ]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "cdt-extension@confrerie-des-traducteurs.fr"
+    }
+  }
 }

@@ -14,7 +14,7 @@ extensionApi.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === 'cdt:postFormViaTab') {
         handlePostFormViaTab(message, sendResponse);
-        return true;
+        return true; // On garde la connexion ouverte car c'est une fonction async
     }
 
     if (message.type === 'cdt:resolveDownload') {
@@ -149,21 +149,17 @@ async function fetchWithFallback(url) {
     }
 }
 
-function createHiddenTab(url) {
-    return new Promise((resolve, reject) => {
-        extensionApi.tabs.create({url, active: false}, tab => {
-            const error = extensionApi.runtime.lastError;
-            if (error) {
-                reject(new Error(error.message));
-                return;
-            }
-            if (!tab?.id) {
-                reject(new Error('Failed to create tab'));
-                return;
-            }
-            resolve(tab.id);
-        });
-    });
+// Conversion en Promise pour Manifest V3
+async function createHiddenTab(url) {
+    try {
+        const tab = await extensionApi.tabs.create({url, active: false});
+        if (!tab?.id) {
+            throw new Error('Failed to create tab');
+        }
+        return tab.id;
+    } catch (error) {
+        throw new Error(error.message);
+    }
 }
 
 function waitForTabComplete(tabId, timeoutMs) {
@@ -198,14 +194,12 @@ function waitForTabComplete(tabId, timeoutMs) {
     });
 }
 
-function removeTab(tabId) {
-    return new Promise(resolve => {
-        if (!extensionApi.tabs?.remove) {
-            resolve();
-            return;
-        }
-        extensionApi.tabs.remove(tabId, () => resolve());
-    });
+async function removeTab(tabId) {
+    try {
+        await extensionApi.tabs.remove(tabId);
+    } catch (error) {
+        // Ignore errors if the tab is already gone
+    }
 }
 
 async function runSearchInTab(tabId, url, body, timeoutMs) {
@@ -255,40 +249,31 @@ async function runSearchInTab(tabId, url, body, timeoutMs) {
     return result;
 }
 
-function handleOpenTab(message, sendResponse) {
+async function handleOpenTab(message, sendResponse) {
     if (!message?.url) {
         sendResponse({ok: false, error: 'Missing URL'});
         return;
     }
 
-    if (!extensionApi.tabs?.create) {
-        sendResponse({ok: false, error: 'Tabs API unavailable'});
-        return;
-    }
-
-    extensionApi.tabs.create({url: message.url, active: true}, () => {
-        const error = extensionApi.runtime.lastError;
-        if (error) {
-            sendResponse({ok: false, error: error.message});
-            return;
-        }
+    try {
+        await extensionApi.tabs.create({url: message.url, active: true});
         sendResponse({ok: true});
-    });
+    } catch (error) {
+        sendResponse({ok: false, error: error.message});
+    }
 }
 
-function handleCloseTab(message, sender, sendResponse) {
+async function handleCloseTab(message, sender, sendResponse) {
     const tabId = sender?.tab?.id;
-    if (!tabId || !extensionApi.tabs?.remove) {
+    if (!tabId) {
         sendResponse({ok: false, error: 'Tab unavailable'});
         return;
     }
 
-    extensionApi.tabs.remove(tabId, () => {
-        const error = extensionApi.runtime.lastError;
-        if (error) {
-            sendResponse({ok: false, error: error.message});
-            return;
-        }
+    try {
+        await extensionApi.tabs.remove(tabId);
         sendResponse({ok: true});
-    });
+    } catch (error) {
+        sendResponse({ok: false, error: error.message});
+    }
 }
