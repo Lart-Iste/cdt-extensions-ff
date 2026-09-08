@@ -21,7 +21,7 @@ La politique de confidentialité est publiée ici :
 
 ## Support
 
-Contact : `aaltchv@proton.me`
+Contact : `nope`
 
 ## Licence
 
