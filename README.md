@@ -8,11 +8,9 @@ Extension non officielle qui améliore l’usage du site de la Confrérie des Tr
 - Lien direct de téléchargement CdT vers Mod Organizer 2 (MODL).
 - Boutons repositionnables et paramètres persistés localement.
 
-## Installation (mode développeur)
+## Installation
 
-1. Ouvrir `chrome://extensions`.
-2. Activer le mode développeur.
-3. Charger le dossier `CdT-extensions`.
+1. Téléchargez et installez depuis [addons.mozilla.org](https://addons.mozilla.org/fr/firefox/extensions/)
 
 ## Confidentialité
 
